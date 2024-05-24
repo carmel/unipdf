@@ -24,7 +24,7 @@ func SetLicenseKey(content string, customerName string) error {
 		return err
 	}
 
-	if strings.ToLower(lk.CustomerName) != strings.ToLower(customerName) {
+	if strings.EqualFold(lk.CustomerName, customerName) {
 		return fmt.Errorf("customer name mismatch, expected '%s', but got '%s'", customerName, lk.CustomerName)
 	}
 
@@ -61,12 +61,12 @@ func init() {
 	}
 }
 
-func GetLicenseKey() *LicenseKey {
-	if licenseKey == nil {
-		return nil
-	}
+// func GetLicenseKey() *LicenseKey {
+// 	if licenseKey == nil {
+// 		return nil
+// 	}
 
-	// Copy.
-	lk2 := *licenseKey
-	return &lk2
-}
+// 	// Copy.
+// 	lk2 := *licenseKey
+// 	return &lk2
+// }
