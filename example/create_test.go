@@ -24,7 +24,13 @@ func TestCreatePDFReport(t *testing.T) {
 	robotoFontPro, err := model.NewPdfFontFromTTFFile("./assets/Roboto-Bold.ttf")
 	checkErr(err)
 
+	simfang, err := model.NewCompositePdfFontFromTTFFile("./assets/simfang.ttf")
+	checkErr(err)
+
+	common.SetLogger(common.NewConsoleLogger(common.LogLevelDebug))
+
 	c := creator.New()
+	c.EnableFontSubsetting(simfang)
 	c.SetPageMargins(50, 50, 100, 70)
 	c.SetPageSize(creator.PageSizeA4)
 
@@ -34,7 +40,8 @@ func TestCreatePDFReport(t *testing.T) {
 	hstyle := c.NewTextStyle()
 	hstyle.Color = creator.ColorRGBFromArithmetic(0.2, 0.2, 0.2)
 	hstyle.FontSize = 28
-	toc.SetHeading("Table of Contents", hstyle)
+	hstyle.Font = simfang
+	toc.SetHeading("内容纲目", hstyle)
 	lstyle := c.NewTextStyle()
 	lstyle.FontSize = 14
 	toc.SetLineStyle(lstyle)
@@ -286,9 +293,7 @@ func documentControlPage(c *creator.Creator, fontRegular *model.PdfFont, fontBol
 	sc.Add(histTable)
 
 	err := c.Draw(ch)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 }
 
 // Chapter giving an overview of features.
@@ -405,9 +410,7 @@ func featureOverviewPage(c *creator.Creator, fontRegular *model.PdfFont, fontBol
 
 	// Show logo.
 	img, err := c.NewImageFromFile("./assets/unidoc-logo.png")
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 	img.ScaleToHeight(50)
 	sc.Add(img)
 
@@ -426,9 +429,7 @@ func featureOverviewPage(c *creator.Creator, fontRegular *model.PdfFont, fontBol
 
 	qrCode, _ := makeQrCodeImage("HELLO", 40, 5)
 	img, err = c.NewImageFromGoImage(qrCode)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 	img.SetWidth(40)
 	img.SetHeight(40)
 	sc.Add(img)
@@ -458,13 +459,9 @@ func featureOverviewPage(c *creator.Creator, fontRegular *model.PdfFont, fontBol
 
 	buffer := bytes.NewBuffer([]byte{})
 	err = graph.Render(chart.PNG, buffer)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 	img, err = c.NewImageFromData(buffer.Bytes())
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 	img.SetMargins(0, 0, 10, 0)
 	sc.Add(img)
 

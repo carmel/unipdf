@@ -375,12 +375,10 @@ func drawParagraphOnBlock(blk *Block, p *Paragraph, ctx DrawContext) (DrawContex
 			cc.Add_Tstar()
 		}
 
-		runes := []rune(line)
-
 		// Get width of the line (excluding spaces).
 		w := 0.0
 		spaces := 0
-		for i, r := range runes {
+		for i, r := range line {
 			if r == ' ' {
 				spaces++
 				continue
@@ -424,7 +422,7 @@ func drawParagraphOnBlock(blk *Block, p *Paragraph, ctx DrawContext) (DrawContex
 		enc := p.textFont.Encoder()
 
 		var encoded []byte
-		for _, r := range runes {
+		for _, r := range line {
 			if r == '\u000A' { // LF
 				continue
 			}

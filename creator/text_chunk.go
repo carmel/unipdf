@@ -57,9 +57,8 @@ func (tc *TextChunk) Wrap(width float64) ([]string, error) {
 	var widths []float64
 
 	style := tc.Style
-	runes := []rune(tc.Text)
 
-	for _, r := range runes {
+	for _, r := range tc.Text {
 		// Move to the next line due to newline wrapping (LF).
 		if r == '\u000A' {
 			lines = append(lines, strings.TrimRightFunc(string(line), unicode.IsSpace)+string(r))

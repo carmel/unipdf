@@ -781,6 +781,11 @@ func TestChapter(t *testing.T) {
 
 	ch1 := c.NewChapter("Introduction")
 
+	// 防止中文字符串不正确换行
+	ch1.GetHeading().SetEnableWrap(false)
+	// 是否展示级别编号
+	ch1.SetShowNumbering(false)
+
 	p := c.NewParagraph("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt " +
 		"ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut " +
 		"aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore " +
